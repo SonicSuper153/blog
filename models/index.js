@@ -1,27 +1,51 @@
+const { sequelize } = require('../config/db');
 const Role = require('./role');
 const User = require('./user');
 const Category = require('./category');
 const Post = require('./post');
 const Comment = require('./comment');
 
+// --- Associations ---
+
+// User <-> Role
+User.belongsTo(Role, { foreignKey: 'role_id' });
+Role.hasMany(User, { foreignKey: 'role_id' });
+
+// Post <-> User (Author)
+Post.belongsTo(User, { foreignKey: 'user_id', as: 'author' });
+User.hasMany(Post, { foreignKey: 'user_id' });
+
+// Post <-> Category
+Post.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
+Category.hasMany(Post, { foreignKey: 'category_id' });
+
+// Comment <-> Post
+Comment.belongsTo(Post, { foreignKey: 'post_id' });
+Post.hasMany(Comment, { foreignKey: 'post_id' });
+
+// Comment <-> User
+Comment.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Comment, { foreignKey: 'user_id' });
+
 async function syncDatabase() {
     try {
-        console.log("Starting Database Sync...");
+        console.log("Starting Database Sync with Sequelize...");
 
-        // 1. Roles (No dependencies)
-        await Role.createTable();
+        // Sync all models
+        console.log("Synchronizing tables...");
+        await sequelize.sync();
+        console.log("Tables synchronized.");
 
-        // 2. Categories (No dependencies)
-        await Category.createTable();
-
-        // 3. Users (Depends on Roles for migration)
-        await User.createTable();
-
-        // 4. Posts (Depends on Users and Categories)
-        await Post.createTable();
-
-        // 5. Comments (Depends on Posts and Users)
-        await Comment.createTable();
+        // Seeding Roles if needed
+        const rolesCount = await Role.count();
+        if (rolesCount === 0) {
+            await Role.bulkCreate([
+                { name: 'Admin' },
+                { name: 'User' },
+                { name: 'Editor' }
+            ]);
+            console.log("Roles seeded.");
+        }
 
         console.log("Database Sync Completed Successfully.");
     } catch (err) {
@@ -30,6 +54,7 @@ async function syncDatabase() {
 }
 
 module.exports = {
+    sequelize,
     Role,
     User,
     Category,

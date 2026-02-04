@@ -1,4 +1,4 @@
-const Post = require('../models/post');
+const { Post, User, Category } = require('../models/index');
 
 exports.front = (req, res) => {
     res.render("index", {
@@ -8,7 +8,14 @@ exports.front = (req, res) => {
 
 exports.home = async (req, res) => {
     try {
-        const posts = await Post.findAll();
+        const posts = await Post.findAll({
+            include: [
+                { model: User, as: 'author', attributes: ['username'] },
+                { model: Category, as: 'category', attributes: ['name'] }
+            ],
+            order: [['created_at', 'DESC']]
+        });
+
         res.render("home", {
             blogs: posts || []
         });

@@ -1,27 +1,37 @@
-const Post = require('../models/post');
+const { Post, User, Category } = require('../models/index');
 
-exports.renderCreateBlog = (req, res) => {
-    res.render('addBlog', {
-        user: req.session.user
-    });
+exports.renderCreateBlog = async (req, res) => {
+    try {
+        const categories = await Category.findAll({ where: { status: 'Active' } });
+        res.render('addBlog', {
+            user: req.session.user,
+            categories
+        });
+    } catch (err) {
+        console.error("Error rendering add blog:", err);
+        res.redirect('/home');
+    }
 };
 
 exports.createBlog = async (req, res) => {
-    const { title, content } = req.body;
+    const { title, content, category_id } = req.body;
     const user_id = req.session.user.id;
 
     try {
         await Post.create({
             title,
             content,
-            user_id
+            user_id,
+            category_id: category_id || null
         });
         res.redirect('/home');
     } catch (err) {
         console.error("Error creating blog:", err);
+        const categories = await Category.findAll({ where: { status: 'Active' } });
         res.render('addBlog', {
             error: "Failed to create blog. Please try again.",
-            user: req.session.user
+            user: req.session.user,
+            categories
         });
     }
 };
@@ -29,7 +39,12 @@ exports.createBlog = async (req, res) => {
 exports.showBlog = async (req, res) => {
     try {
         const id = req.params.id;
-        const post = await Post.findById(id);
+        const post = await Post.findByPk(id, {
+            include: [
+                { model: User, as: 'author', attributes: ['username'] },
+                { model: Category, as: 'category', attributes: ['name'] }
+            ]
+        });
 
         if (!post) {
             return res.status(404).render('home', {

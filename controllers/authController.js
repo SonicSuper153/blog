@@ -1,20 +1,19 @@
+const { User } = require('../models/index');
 
-const User = require('../models/user');
 exports.signup = async (req, res) => {
     try {
         const { username, email, password } = req.body;
-        const result = await User.create({
+        const user = await User.create({
             username,
             email,
-            password,
+            password
         });
 
-        const user = result[0];
         req.session.user = {
-             id: user.id,
+            id: user.id,
             username: user.username,
             email: user.email,
-            role: user.role
+            role: user.role || "user"
         };
 
         return res.redirect("/");
@@ -27,14 +26,14 @@ exports.signup = async (req, res) => {
 exports.signin = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.findByEmail(email);
+        const user = await User.findOne({ where: { email } });
         if (!user) {
-            return res.status(400).send("Invalid email or password");
+            return res.render("signin", { error: "Invalid email or password" });
         }
 
-        const isMatch = await User.comparePassword(password, user.password);
+        const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            return res.status(400).send("Invalid email or password");
+            return res.render("signin", { error: "Invalid email or password" });
         }
 
         req.session.user = {
@@ -47,11 +46,9 @@ exports.signin = async (req, res) => {
         console.log("User signed in:", user.username);
         return res.redirect("/");
     } catch (err) {
-        // console.error(err.message);
-        // return res.status(500).send("Internal Server Error");
-        return res.render("signin",{
-            error: "Incorrect Email or Password"
-        })
+        return res.render("signin", {
+            error: "An error occurred during sign in"
+        });
     }
 }
 
