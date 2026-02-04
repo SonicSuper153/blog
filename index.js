@@ -3,9 +3,12 @@ const path = require('path')
 require('dotenv').config();
 const app = express()
 const port = process.env.PORT || 3000;
-const User = require('./models/user');
+const { syncDatabase } = require('./models/index');
 const userRouter = require('./routes/user');
+
+syncDatabase();
 const staticRouter = require('./routes/staticRouter');
+const blogRouter = require('./routes/blog');
 
 
 require('./middlewares/sessions')(app);
@@ -16,6 +19,7 @@ app.locals.siteName = "My Blog";
 
 app.use('/', staticRouter);
 app.use('/user', userRouter);
+app.use('/blogs', blogRouter);
 
 
 app.listen(port, () => {

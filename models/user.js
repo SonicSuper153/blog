@@ -12,9 +12,18 @@ class User {
                 password TEXT NOT NULL,
                 salt TEXT NOT NULL,
                 profile_image TEXT,
-                role VARCHAR(20) DEFAULT 'USER' CHECK (role IN ('USER', 'ADMIN')),
+                role VARCHAR(20) DEFAULT 'USER' CHECK (role IN ('USER', 'ADMIN', 'EDITOR')),
+                role_id INTEGER,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
+        `;
+        const roleIdMigrationQuery = `
+            DO $$ 
+            BEGIN 
+                IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='role_id') THEN
+                    ALTER TABLE users ADD COLUMN role_id INTEGER REFERENCES roles(id) ON DELETE SET NULL;
+                END IF;
+            END $$;
         `;
         const sessionTableQuery = `
             CREATE TABLE IF NOT EXISTS "session" (
@@ -36,6 +45,7 @@ class User {
         `;
         try {
             await sql.query(userTableQuery);
+            await sql.query(roleIdMigrationQuery);
             await sql.query(sessionTableQuery);
             await sql.query(sessionPkeyQuery);
             await sql.query(sessionIndexQuery);
@@ -89,6 +99,5 @@ class User {
     }
 }
 
-User.createTable();
 
 module.exports = User;

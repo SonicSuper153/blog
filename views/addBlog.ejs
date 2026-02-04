@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>Create Blog - <%= siteName %>
+        </title>
+        <style>
+            .create-blog-container {
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 30px;
+                background: #fff;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .form-label {
+                font-weight: 600;
+                color: #333;
+            }
+
+            .btn-submit {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border: none;
+                color: white;
+                padding: 12px 30px;
+                border-radius: 8px;
+                font-weight: 600;
+                transition: transform 0.2s;
+            }
+
+            .btn-submit:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+            }
+        </style>
+</head>
+
+<body class="bg-light">
+    <%- include('./partials/nav') %>
+
+        <div class="container">
+            <div class="create-blog-container">
+                <h2 class="mb-4 text-center">Create a New Blog Post</h2>
+
+                <% if (locals.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <form action="/blogs/add" method="POST">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Blog Title</label>
+                                <input type="text" class="form-control" id="title" name="title"
+                                    placeholder="Enter a catchy title" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Content</label>
+                                <textarea class="form-control" id="content" name="content" rows="10"
+                                    placeholder="Write your blog content here..." required></textarea>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="submit" class="btn btn-submit">Publish Blog</button>
+                            </div>
+                        </form>
+            </div>
+        </div>
+
+        <%- include('./partials/scripts') %>
+</body>
+
+</html>

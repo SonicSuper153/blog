@@ -1,14 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <%- include('partials/head') %>
-        <title>Bootstrap demo</title>
+        <title>Home - <%= siteName %>
+        </title>
 </head>
 
-<body>
+<body class="bg-light">
     <%- include('partials/nav') %>
-        <p>hello</p>
+
+        <div class="container">
+            <div class="row g-4">
+                <% if (locals.blogs && blogs.length> 0) { %>
+                    <% blogs.forEach(blog=> { %>
+                        <div class="col-md-4">
+                            <div class="card blog-card">
+                                <img src="<%= blog.featured_image || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60' %>"
+                                    class="card-img-top" alt="<%= blog.title %>">
+                                <div class="card-body">
+                                    <h5 class="blog-title">
+                                        <%= blog.title %>
+                                    </h5>
+                                    <p class="blog-excerpt">
+                                        <%= blog.content.substring(0, 120) %>...
+                                    </p>
+                                    <a href="/blogs/view/<%= blog.id %>" class="btn btn-read-more">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                            <% } else { %>
+                                <div class="col-12 text-center py-5">
+                                    <h3 class="text-muted">No blog posts found yet.</h3>
+                                    <% if (locals.user) { %>
+                                        <a href="/blogs/add" class="btn btn-primary mt-3">Be the first to write one!</a>
+                                        <% } %>
+                                </div>
+                                <% } %>
+            </div>
+        </div>
 
         <%- include('partials/scripts') %>
 </body>

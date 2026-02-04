@@ -14,9 +14,9 @@
                 </li>
                 <% if (locals.user) { %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/blogs">Add Blogs</a>
+                        <a class="nav-link" href="/blogs/add">Create Blog</a>
                     </li>
-                <% } %>
+                    <% } %>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <% if (user) { %>
@@ -43,9 +43,9 @@
 </nav>
 
 <% if (locals.error) { %>
- <div>
-    <div class="alert alert-danger" role="alert"><%= locals.error %></div>
- </div>
-<% } %>
-
- 
+    <div>
+        <div class="alert alert-danger" role="alert">
+            <%= locals.error %>
+        </div>
+    </div>
+    <% } %>
