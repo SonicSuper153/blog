@@ -49,10 +49,8 @@ exports.renderHomePage = async (req, res) => {
  */
 exports.renderCreateBlog = async (req, res) => {
     try {
-        const categories = await Category.findAll();
         res.render('addBlog', {
-            user: req.session.user,
-            categories
+            user: req.session.user
         });
     } catch (err) {
         console.error("Error rendering add blog page:", err);
@@ -83,13 +81,10 @@ exports.createBlog = [
             await Post.create(blogData);
             res.redirect('/');
         } catch (err) {
-
             console.error("Error creating blog:", err);
-            const categories = await Category.findAll();
             res.render('addBlog', {
                 error: "Failed to create blog. Please try again.",
-                user: req.session.user,
-                categories
+                user: req.session.user
             });
         }
     }
@@ -170,11 +165,9 @@ exports.editBlog = async (req, res) => {
             return res.status(403).send("Unauthorized: You can only edit your own posts.");
         }
 
-        const categories = await Category.findAll();
         res.render('editBlog', {
             blog: post,
-            user: req.session.user,
-            categories
+            user: req.session.user
         });
     } catch (err) {
         console.error("Error rendering edit page:", err);
@@ -271,44 +264,6 @@ exports.addCategory = async (req, res) => {
 
 const { Op } = require("sequelize");
 
-exports.searchBlog = async (req, res) => {
-    try {
-        const { q } = req.query;
-
-        if (!q) {
-            return res.redirect("/");
-        }
-
-        const post = await Post.findAll({
-            where: {
-                title: {
-                    [Op.iLike]: `%${q}%`
-                }
-            },
-            include: [
-                ...blogInclude,
-            ],
-        });
-
-        if (!post) {
-            return res.render("home", {
-                blogs: [],
-                user: req.session.user,
-                message: "No blog found"
-            });
-        }
-
-        res.render("searchBlog", {
-            blogs: post,
-            user: req.session.user,
-            message: "Blog found"
-        });
-
-    } catch (err) {
-        console.error("Search error:", err);
-        res.redirect("/");
-    }
-};
 
 exports.sortBlog = async (req, res) => {
     try {
@@ -329,7 +284,7 @@ exports.sortBlog = async (req, res) => {
             order: [['created_at', 'DESC']]
         });
 
-        res.render("sortBlog", {
+        res.render("home", {
             blogs: posts || [],
             user: req.session.user,
             query: q,

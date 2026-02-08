@@ -18,20 +18,18 @@
                     </li>
                     <% } %>
                         <li class="nav-item">
-                            <form action="/blogs/search" method="get">
-                                <input type="q" name="q" placeholder="Search">
-                                <button type="submit">Search</button>
-                            </form>
-                        </li>
-                        <li class="nav-item">
                             <form action="/blogs/sort" method="GET" class="d-flex gap-2 align-items-center">
+                                <!-- Search input -->
+                                <input type="text" name="q" class="form-control" placeholder="Search blogs..."
+                                    value="<%= locals.query || '' %>">
 
                                 <!-- Category dropdown -->
-                                <select class="form-control" name="category_id">
+                                <select class="form-control" name="category_id" style="min-width: 150px;">
                                     <option value="">All Categories</option>
                                     <% if (locals.allCategories) { %>
                                         <% locals.allCategories.forEach(cat=> { %>
-                                            <option value="<%= cat.id %>">
+                                            <option value="<%= cat.id %>" <%=locals.selectedCategory==cat.id
+                                                ? 'selected' : '' %>>
                                                 <%= cat.name %>
                                             </option>
                                             <% }) %>
@@ -39,10 +37,9 @@
                                 </select>
 
                                 <!-- Submit -->
-                                <button type="submit" class="btn btn-outline-primary">
-                                    Go
+                                <button type="submit" class="btn btn-outline-primary text-white">
+                                    Search
                                 </button>
-
                             </form>
                         </li>
 
