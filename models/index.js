@@ -5,38 +5,29 @@ const Category = require('./category');
 const Post = require('./post');
 const Comment = require('./comment');
 
-// --- Associations ---
-
-// User <-> Role
 User.belongsTo(Role, { foreignKey: 'role_id' });
 Role.hasMany(User, { foreignKey: 'role_id' });
 
-// Post <-> User (Author)
 Post.belongsTo(User, { foreignKey: 'user_id', as: 'author' });
 User.hasMany(Post, { foreignKey: 'user_id' });
 
-// Post <-> Category
 Post.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
 Category.hasMany(Post, { foreignKey: 'category_id' });
 
-// Comment <-> Post
 Comment.belongsTo(Post, { foreignKey: 'post_id' });
 Post.hasMany(Comment, { foreignKey: 'post_id' });
 
-// Comment <-> User
 Comment.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(Comment, { foreignKey: 'user_id' });
 
 async function syncDatabase() {
     try {
-        console.log("Starting Database Sync with Sequelize...");
+        // console.log("Starting Database");
 
-        // Sync all models
-        console.log("Synchronizing tables...");
+        // console.log("Synchronizing tables...");
         await sequelize.sync();
-        console.log("Tables synchronized.");
+        console.log("Tables Wokring Fine.");
 
-        // Seeding Roles if needed
         const rolesCount = await Role.count();
         if (rolesCount === 0) {
             await Role.bulkCreate([
@@ -44,10 +35,23 @@ async function syncDatabase() {
                 { name: 'User' },
                 { name: 'Editor' }
             ]);
-            console.log("Roles seeded.");
+            // console.log("Roles seeded.");
         }
 
-        console.log("Database Sync Completed Successfully.");
+        const categoriesCount = await Category.count();
+        if (categoriesCount === 0) {
+            await Category.bulkCreate([
+                { name: 'Technology' },
+                { name: 'Lifestyle' },
+                { name: 'Education' },
+                { name: 'Travel' },
+                { name: 'Food' },
+                { name: 'General' },
+                { name: 'Other' }
+            ]);
+        }
+
+        console.log("Database Successfully Connected.");
     } catch (err) {
         console.error("Database Sync Failed:", err);
     }

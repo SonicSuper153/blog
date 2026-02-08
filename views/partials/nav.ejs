@@ -10,13 +10,44 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 <% if (locals.user) { %>
                     <li class="nav-item">
                         <a class="nav-link" href="/blogs/add">Create Blog</a>
                     </li>
                     <% } %>
+                        <li class="nav-item">
+                            <form action="/blogs/search" method="get">
+                                <input type="q" name="q" placeholder="Search">
+                                <button type="submit">Search</button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/blogs/sort" method="GET" class="d-flex gap-2 align-items-center">
+
+                                <!-- Category dropdown -->
+                                <select class="form-control" name="category_id">
+                                    <option value="">All Categories</option>
+                                    <% if (locals.allCategories) { %>
+                                        <% locals.allCategories.forEach(cat=> { %>
+                                            <option value="<%= cat.id %>">
+                                                <%= cat.name %>
+                                            </option>
+                                            <% }) %>
+                                                <% } %>
+                                </select>
+
+                                <!-- Submit -->
+                                <button type="submit" class="btn btn-outline-primary">
+                                    Go
+                                </button>
+
+                            </form>
+                        </li>
+
+
+
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <% if (user) { %>

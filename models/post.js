@@ -17,7 +17,8 @@ const Post = sequelize.define('Post', {
     },
     featured_image: {
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"
     },
     user_id: {
         type: DataTypes.INTEGER,
