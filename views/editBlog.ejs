@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>Edit Blog - <%= blog.title %>
+        </title>
+        <style>
+            .edit-blog-container {
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 30px;
+                background: #fff;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .form-label {
+                font-weight: 600;
+                color: #333;
+            }
+
+            .btn-submit {
+                background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+                border: none;
+                color: white;
+                padding: 12px 30px;
+                border-radius: 8px;
+                font-weight: 600;
+                transition: transform 0.2s;
+            }
+
+            .btn-submit:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(253, 160, 133, 0.4);
+            }
+
+            .current-image {
+                max-width: 200px;
+                border-radius: 8px;
+                margin-top: 10px;
+            }
+        </style>
+</head>
+
+<body class="bg-light">
+    <%- include('./partials/nav') %>
+
+        <div class="container">
+            <div class="edit-blog-container">
+                <h2 class="mb-4 text-center">Edit Blog Post</h2>
+
+                <% if (locals.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <form action="/blogs/update/<%= blog.id %>" method="POST" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="featured_image" class="form-label">Update Cover Image</label>
+                                <input type="file" class="form-control" id="featured_image" name="featured_image" />
+                                <% if (blog.featured_image) { %>
+                                    <p class="mt-2 mb-1 small text-muted">Current Image:</p>
+                                    <img src="<%= blog.featured_image.startsWith('http') ? blog.featured_image : '/uploads/' + blog.featured_image %>"
+                                        class="current-image shadow-sm" alt="current image">
+                                    <% } %>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="category_id" class="form-label">Category</label>
+                                <select class="form-control" id="category_id" name="category_id" required>
+                                    <% categories.forEach(cat=> { %>
+                                        <option value="<%= cat.id %>" <%=blog.category_id===cat.id ? 'selected' : '' %>>
+                                            <%= cat.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Blog Title</label>
+                                <input type="text" class="form-control" id="title" name="title"
+                                    value="<%= blog.title %>" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Content</label>
+                                <textarea class="form-control" id="content" name="content" rows="10"
+                                    required><%= blog.content %></textarea>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/blogs/view/<%= blog.id %>"
+                                    class="btn btn-outline-secondary me-md-2">Cancel</a>
+                                <button type="submit" class="btn btn-submit">Update Blog</button>
+                            </div>
+                        </form>
+
+            </div>
+        </div>
+
+        <%- include('./partials/scripts') %>
+</body>
+
+</html>
