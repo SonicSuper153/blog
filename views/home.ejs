@@ -10,7 +10,6 @@
 <body class="bg-light">
     <%- include('partials/nav') %>
         <div class="container mt-4">
-<<<<<<< HEAD
             <div class="mb-4 d-flex align-items-center gap-2">
             <label for="sortDropdown" class="form-label fw-bold mb-0">
                 Sort by:
@@ -18,15 +17,13 @@
 
             <select class="form-select w-auto" id="sortDropdown" onchange="handleSort(this)">
                 <option value="desc" <% if (!locals.sortBy || locals.sortBy === 'desc') { %>selected<% } %>>
-                    Latest First
+                    Latest
                 </option>
                 <option value="asc" <% if (locals.sortBy === 'asc') { %>selected<% } %>>
-                    Oldest First
+                    Oldest
                 </option>
             </select>
         </div>
-=======
->>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
             <% if (locals.blogs && blogs.length> 0) { %>
                 <div class="row g-4">
                     <% blogs.forEach(blog=> { %>
@@ -44,12 +41,8 @@
                                         <%= blog.title %>
                                     </h5>
                                     <h6 class="card-subtitle mb-2 text-muted">
-<<<<<<< HEAD
                                         By <%= blog.author ? (locals.user && blog.user_id===locals.user.id ? 'you' :
                                             blog.author.username) : 'Anonymous' %>
-=======
-                                        By <%= blog.author ? blog.author.username : 'Anonymous' %>
->>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
                                     </h6>
                                     <p class="card-text">
 
@@ -92,7 +85,6 @@
                     <% } %>
         </div>
 
-<<<<<<< HEAD
         <script>
             function handleSort(selectElement) {
                 const sortValue = selectElement.value;
@@ -101,8 +93,6 @@
             }
         </script>
 
-=======
->>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
         <%- include('partials/scripts') %>
 </body>
 

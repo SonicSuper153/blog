@@ -20,11 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Global View Locals
-<<<<<<< HEAD
 // app.use(require('./middlewares/viewLocals'));
-=======
-app.use(require('./middlewares/viewLocals'));
->>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
 
 // View engine setup
 app.set('view engine', 'ejs');
