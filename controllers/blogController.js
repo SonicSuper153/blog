@@ -41,9 +41,6 @@ exports.renderHomePage = async (req, res) => {
     }
 };
 
-/**
- * Renders the page for creating a new blog post
- */
 exports.renderCreateBlog = async (req, res) => {
     try {
         const categories = await Category.findAll({
@@ -59,9 +56,6 @@ exports.renderCreateBlog = async (req, res) => {
     }
 };
 
-/**
- * Handles creation of a new blog post
- */
 exports.createBlog = [
     upload.single('featured_image'),
     async (req, res) => {
@@ -121,9 +115,6 @@ exports.showBlog = async (req, res) => {
     }
 };
 
-/**
- * Handles deletion of a blog post
- */
 exports.deleteBlog = async (req, res) => {
     try {
         const id = req.params.id;
@@ -145,9 +136,6 @@ exports.deleteBlog = async (req, res) => {
     }
 };
 
-/**
- * Renders the edit page for a blog post
- */
 exports.editBlog = async (req, res) => {
     try {
         const id = req.params.id;
