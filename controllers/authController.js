@@ -1,5 +1,8 @@
 const { User } = require('../models/index');
+<<<<<<< HEAD
 const bcrypt = require('bcryptjs');
+=======
+>>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
 
 exports.signup = async (req, res) => {
     try {
@@ -16,6 +19,10 @@ exports.signup = async (req, res) => {
             email: user.email,
             role: user.role || "user"
         };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
         return res.redirect("/");
     } catch (err) {
         console.error(err.message);
@@ -23,10 +30,13 @@ exports.signup = async (req, res) => {
     }
 }
 
+<<<<<<< HEAD
 User.prototype.comparePassword = async function (candidatePassword) {
     return await bcrypt.compare(candidatePassword, this.password);
 };
 
+=======
+>>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
 exports.signin = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -47,7 +57,11 @@ exports.signin = async (req, res) => {
             role: user.role
         };
 
+<<<<<<< HEAD
         console.log("Who the user is man?", user.username);
+=======
+        console.log("User signed in:", user.username);
+>>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
         return res.redirect("/");
     } catch (err) {
         return res.render("signin", {

@@ -9,11 +9,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+<<<<<<< HEAD
+=======
+  "description": "",
+>>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
     "bcryptjs": "^3.0.3",
     "connect-pg-simple": "^10.0.0",
+<<<<<<< HEAD
     "cookie-parser": "^1.4.7",
+=======
+    "cookie-parser": "^1how does .4.7",
+>>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
     "dotenv": "^17.2.3",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
@@ -26,6 +34,10 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
+<<<<<<< HEAD
   },
   "description": ""
+=======
+  }
+>>>>>>> 1bb3d35b65a2e6fce9a0c0b685bf969fee8f7914
 }
